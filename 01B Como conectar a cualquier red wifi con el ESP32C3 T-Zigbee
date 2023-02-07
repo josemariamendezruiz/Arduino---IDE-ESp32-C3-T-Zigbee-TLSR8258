@@ -1,0 +1,56 @@
+/*
+    CONEXION A RED WIFI CON ESP32
+    AUTOR : JOSE MARIA MENDEZ RUIZ
+    FEBRERO 2023
+    CODIGO LIBRE PARA UTILIZAR COMO QUIERAS
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+ 
+
+#include "WiFi.h"
+
+#define WIFI_SSID "Telecable_6D9AA1"  // Aquí pondremos el nombre de la red wifi a la cual nos vamos a conectar
+#define WIFI_PASS "yVRq7aXQ"          // Aquí la contraseña/password que tiene dicha red wifi
+
+void setup() {
+
+  Serial.begin (9600);
+  Serial.println ("Conectando a la red wifi indicada, espere por favor");
+  
+  WiFi.begin (WIFI_SSID, WIFI_PASS);  // Iniciamos el wifi y nos intentamos conectar con los datos indicados arriba
+
+  // En este paso entrará en un bucle hasta que se conecte al wifi, es decir, no continuará la ejecución del código hasta que se conecte a la red wifi
+  // en este ejemplo de conexión no vamos a entrar en detalles pero tener en cuenta que siempre tenemos que poner una forma de salir del código si no se cumple
+  // no vamos a estar esperando eternamente, por lo que tenemos que tener alguna forma de al pasar un tiempo determinado, en el caso de no conectar a la red wifi 
+  // entonces nos lo indicará para saber que hay algún problema, como poner dos leds uno rojo si no se conecta y otro verde si se conecta al wifi
+  // Esto lo haremos más adelante cuando realicemos conexiones wifi para enviar información a un servidor, etc..
+
+  while (WiFi.status () != WL_CONNECTED)
+  {
+    // Este bucle se ejecutará sin fin hasta que se conecte a la red wifi
+    delay(100);
+  }
+
+  Serial.println ("Nos hemos conectado, la IP asignada por el router es ");
+  Serial.println (WiFi.localIP());
+ 
+}
+
+void loop() {
+
+  // vamos a ver en el monitor serie como nos llega la señal del wifi
+  Serial.print("Señal RSSI:");
+  Serial.println(WiFi.RSSI());
+  delay (1000);
+}
